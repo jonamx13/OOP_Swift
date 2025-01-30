@@ -34,3 +34,27 @@ print(someVideoMode.resolution.width)
 // It can change because the constant is the memory reference, but the properties are declared as var inside the class
 someVideoMode.frameRate = 30.0
 print(someVideoMode.frameRate)
+
+let vga = Resolution(width: 640, height: 480)
+vga.width
+vga.height
+
+let hd = Resolution(width: 1920, height: 1080)
+
+var cinema = hd
+print("\(cinema.width) x \(cinema.height)")
+cinema.width = 2048
+print("\(cinema.width) x \(cinema.height)")
+print("\(hd.width) x \(hd.height)")
+
+enum CompassPoint {
+    case north, south, east, west
+}
+
+var currentDirection = CompassPoint.north
+let oldDirection = currentDirection
+
+currentDirection = .south
+
+print(currentDirection)
+print(oldDirection)
