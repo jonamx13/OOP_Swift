@@ -212,3 +212,127 @@ let newPlayer = PlayerHP()
 newPlayer.hpPoints = 50
 newPlayer.hpPoints += 40
 newPlayer.hpPoints += 52
+
+
+struct SomeStruct {
+    var counter = 0
+    static let storedTypeProperty = "SOME VALUE"
+    static var computedTypeProperty : Int {
+        return 1
+    }
+}
+
+var instanceStr = SomeStruct()
+
+var otherInstanceStr = SomeStruct()
+
+SomeStruct.computedTypeProperty
+
+enum SomeEnum {
+    static let storedTypeProperty = "SomeValue"
+    static var computedTypeProperty : Int {
+        return 5
+    }
+}
+
+SomeEnum.storedTypeProperty
+
+class SomeClass {
+    static let storedTypeProperty = "Some value"
+    static var computedTypeProperty : Int {
+        return -9
+    }
+    
+    class var overrideableComputedTypeProperty : Int {
+        return 108
+    }
+}
+
+
+// Exercise -> create a class where budget is an static variable that every member has access to it
+    // Implement draw, deposit and consult total budget
+
+actor FamilyBudget {
+    static var totalBudget: Double = 0
+    // private var movements: [String]
+    
+    static func GetTotalBudget() {
+        print("Your total budget is: \(totalBudget)")
+    }
+    
+    static func Draw(_ amount: Double) {
+            totalBudget -= amount
+            print("You have drawn \(amount), your new budget is \(totalBudget)")
+    }
+    
+    static func Deposit(_ amount: Double) {
+            totalBudget += amount
+            print("Your have done a deposit of \(amount), your new budget is \(totalBudget)")
+        }
+    
+}
+
+enum TransactionType {
+    case deposit
+    case draw
+    case consult
+}
+
+class FamilyMember {
+    let name : String
+    
+    func MakeTrasactions(transactionType : TransactionType, _ amount: Double? = nil) {
+        let account = FamilyBudget()
+        
+        switch(transactionType) {
+        case .deposit:
+            if let amount = amount, amount > 0 {
+                print(name)
+                FamilyBudget.Deposit(amount)
+            } else {
+                print(name)
+                print("Error: Please enter a valid amount")
+            }
+        case .draw:
+            if let amount = amount {
+                if amount <= FamilyBudget.totalBudget {
+                    print(name)
+                    FamilyBudget.Draw(amount)
+                } else {
+                    print(name)
+                    print("Error: Insufficient funds for this draw")
+                }
+            } else {
+                print(name)
+                print("Error: please enter a valid amount for the draw")
+            }
+            
+        case .consult:
+            FamilyBudget.GetTotalBudget()
+        }
+    }
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+let jonathan = FamilyMember(name: "Jonathan")
+let edward = FamilyMember(name: "Edward")
+
+FamilyBudget.GetTotalBudget()
+FamilyBudget.totalBudget = 1000
+FamilyBudget.GetTotalBudget()
+
+jonathan.MakeTrasactions(transactionType: .deposit, 100)
+jonathan.MakeTrasactions(transactionType: .draw, 50)
+jonathan.MakeTrasactions(transactionType: .consult)
+
+edward.MakeTrasactions(transactionType: .deposit, 0)
+edward.MakeTrasactions(transactionType: .deposit, nil)
+edward.MakeTrasactions(transactionType: .draw, 1500)
+edward.MakeTrasactions(transactionType: .draw, nil)
+
+edward.MakeTrasactions(transactionType: .draw, 570)
+
+FamilyBudget.totalBudget
