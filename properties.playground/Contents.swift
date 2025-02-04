@@ -167,3 +167,48 @@ for (index, person) in personList.enumerated() {
     print("Person \(index + 1): \(greetPerson)")
 }
 
+// willSet // didSet
+class StepCounter {
+    var totalSteps: Int = 0 {
+        willSet(newTotalSteps) {
+            print("The number of steps will increase up to \(newTotalSteps)")
+        }
+        didSet {
+            if totalSteps > oldValue {
+                print("The number of steps has increased by: \(totalSteps - oldValue)")
+            }
+        }
+    }
+}
+
+let stepCounter = StepCounter()
+stepCounter.totalSteps = 10000
+stepCounter.totalSteps += 15000
+stepCounter.totalSteps
+
+
+// Exercise: Define a class with a property for the user HP, this will have to be in the range 0...100
+    // if the value goes upper than 100, limit it
+    // if the value goes to zero, print the message "Game over"
+
+class PlayerHP {
+    var hpPoints: Int = 100 {
+        willSet(newHP) {
+            print("Your current HP are \(hpPoints)")
+        }
+        didSet {
+            if hpPoints > 100 {
+                hpPoints = 100
+                print("Max HP Reached -> Current HP: \(hpPoints)")
+            } else {
+                print("Your new HP are: \(hpPoints)")
+            }
+        }
+    }
+}
+
+let newPlayer = PlayerHP()
+
+newPlayer.hpPoints = 50
+newPlayer.hpPoints += 40
+newPlayer.hpPoints += 52
