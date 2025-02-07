@@ -62,3 +62,64 @@ var controllerStatus = DifferentStateSwitch.off
 controllerStatus.next()
 controllerStatus.next()
 controllerStatus.next()
+
+class SomeClass {
+    class func someMethod() {
+        print("Hello")
+    }
+}
+
+SomeClass.someMethod()
+
+@MainActor
+struct LevelTracker {
+    static var highestUnlockedLevel = 1
+    var currentLevel = 1
+    
+    static func unlock(_ level: Int) {
+        if level > highestUnlockedLevel {
+            highestUnlockedLevel = level
+        }
+    }
+    
+    static func isUnlocked(_ level: Int) -> Bool {
+        return level <= highestUnlockedLevel
+    }
+    
+    mutating func advance(to level: Int) -> Bool {
+        if LevelTracker.isUnlocked(level) {
+            currentLevel = level
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+@MainActor
+class Player {
+    var tracker = LevelTracker()
+    let playerName: String
+    func completeLevel(level: Int) {
+        LevelTracker.unlock(level + 1)
+        tracker.advance(to: level + 1)
+    }
+    
+    init(name: String) {
+        self.playerName = name
+    }
+}
+
+var player = Player(name: "Alice")
+
+player.completeLevel(level: 1)
+player
+
+player.completeLevel(level: 7)
+
+
+if player.tracker.advance(to: 7) {
+    print("We can go to level 7")
+} else {
+    print("Level 7 is still llocked")
+}
